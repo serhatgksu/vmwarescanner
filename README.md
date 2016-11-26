@@ -22,3 +22,6 @@ $ ./scanner.sh
 ```
 ## TOOL KULLANIMI
 Verilen IP yada IP aralığında ki VMware sunucuları tarayarak bulunan sunucular üzerinde SSL HEARTBEAT zafiyetinin kontolünü yaptıktan sonra zafiyetli makinalara SSL HEARTBEAT exploiti uygular.
+
+## NOT
+BU TOOL SADECE EĞİTİM VE TEST AMAÇLI KULLANIMLAR İÇİN YAZILMIŞTIR. AKSİNE KULLANIMLARDAN KİŞİNİN KENDİSİ SORUMLUDUR.
