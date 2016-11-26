@@ -20,3 +20,5 @@ $ cd vmwarescanner
 $ sudo chmod +x scanner.sh & sudo chmod +x heartbeat.py
 $ ./scanner.sh
 ```
+## TOOL KULLANIMI
+Verilen IP yada IP aralığında ki VMware sunucuları tarayarak bulunan sunucular üzerinde SSL HEARTBEAT zafiyetinin kontolünü yaptıktan sonra zafiyetli makinalara SSL HEARTBEAT exploiti uygular.
