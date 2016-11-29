@@ -18,7 +18,7 @@ $ apt-get install git
 $ git clone https://github.com/serhatgksu/vmwarescanner.git
 $ cd vmwarescanner
 $ sudo chmod +x scanner.sh & sudo chmod +x heartbeat.py
-$ ./scanner.sh
+$ ./scanner.sh 1.2.3.0 1.2.3.255
 ```
 ## TOOL KULLANIMI
 Verilen IP yada IP aralığında ki VMware sunucuları tarayarak bulunan sunucular üzerinde SSL HEARTBEAT zafiyetinin kontolünü yaptıktan sonra zafiyetli makinalara SSL HEARTBEAT exploiti uygular.
